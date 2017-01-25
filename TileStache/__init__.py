@@ -180,7 +180,13 @@ def requestLayer(config, path_info):
         Config parameter can be a file path string for a JSON configuration file
         or a configuration object with 'cache', 'layers', and 'dirpath' properties.
     """
-    if type(config) in (str, unicode):
+    try:
+        # Python 2
+        _config_types = (str, unicode)
+    except NameError:
+        # Python 3
+        _config_types = (str, bytes)
+    if type(config) in _config_types:
         #
         # Should be a path to a configuration file we can load;
         # build a tuple key into previously-seen config objects.
@@ -366,7 +372,13 @@ class WSGITileServer:
             on each request, applicable only when config is a JSON file.
         """
 
-        if type(config) in (str, unicode, dict):
+        try:
+            # Python 2
+            _config_types = (str, unicode, dict)
+        except NameError:
+            # Python 3
+            _config_types = (str, bytes, dict)
+        if type(config) in _config_types:
             self.autoreload = autoreload
             self.config_path = config
 
